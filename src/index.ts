@@ -26,9 +26,10 @@ export const handler: Handler = async (event: SQSEvent) => {
       const item = {
         TableName: "DynamoDb-Orden-Compra",
         Key: { ordenCompraId: ordenCompraData.ordenCompraId },
-        UpdateExpression: "SET stages = list_append(stages, :newElement), updatedAt = :updatedAt",
+        UpdateExpression: "SET stages.domiciliosProcessed.success = :successDomiciliosProcessed, stages.domiciliosProcessed.updatedAt = :successUpdatedAt, updatedAt = :updatedAt",
         ExpressionAttributeValues: {
-          ":newElement": ["DOMICILIO PROCESSED"],
+          ":successDomiciliosProcessed": true,
+          ":successUpdatedAt": currentTime.toString(),
           ":updatedAt": currentTime.toString(),
         },
       };
